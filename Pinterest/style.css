@@ -9,30 +9,30 @@ body{
     background: #fafafa;
 }
 
-
 .navbar{
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 12px 20px;
+    gap: 12px;
+    padding: 10px 20px;
     background: white;
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
-.logo{
-    font-weight: bold;
-    font-size: 20px;
-    color: #e60023;
+.logo img{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
 }
+
 
 nav a{
     text-decoration: none;
     color: #111;
     font-weight: 600;
-    padding: 8px 12px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    border-radius: 999px;
 }
 
 nav a.active,
@@ -43,15 +43,15 @@ nav a:hover{
 
 .search-box{
     flex: 1;
-    padding: 10px 15px;
-    border-radius: 30px;
+    padding: 10px 16px;
+    border-radius: 999px;
     border: none;
     background: #efefef;
 }
 
 .profile{
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #111;
     color: white;
@@ -64,38 +64,46 @@ nav a:hover{
 
 .grid{
     column-count: 5;
-    column-gap: 15px;
+    column-gap: 16px;
     padding: 20px;
 }
 
 .card{
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     break-inside: avoid;
+    overflow: hidden;
 }
 
 .card img{
     width: 100%;
-    border-radius: 15px;
+    border-radius: 16px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.card:hover img{
+    filter: brightness(70%);
+    transform: scale(1.03);
 }
 
 .card button{
     position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 8px 14px;
+    top: 12px;
+    right: 12px;
+    padding: 8px 16px;
     background: #e60023;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 999px;
     font-weight: bold;
     opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
 }
 
 .card:hover button{
     opacity: 1;
 }
-
 
 @media (max-width: 1200px){
     .grid{ column-count: 4; }
@@ -110,3 +118,136 @@ nav a:hover{
     nav{ display: none; }
 }
 
+.create-container{
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.create-container h2{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.create-form input,
+.create-form textarea{
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.create-form button{
+    width: 100%;
+    padding: 12px;
+    background: #e60023;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.create-form button:hover{
+    background: #cc001f;
+}
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 90px;
+    height: 100vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    gap: 25px;
+    border-right: 1px solid #eee;
+    z-index: 200;
+}
+
+.sidebar .logo{
+    font-size: 28px;
+    font-weight: bold;
+    color: #e60023;
+}
+
+.nav-item{
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 12px;
+    width: 70px;
+    text-align: center;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background: #efefef;
+}
+
+.grid,
+.create-container{
+    margin-left: 110px;
+}
+.topbar{
+    position: fixed;
+    top: 0;
+    left: 90px;
+    right: 0;
+    height: 64px;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+    z-index: 300;
+}
+
+.p-logo{
+    height: 28px;
+}
+
+.top-search{
+    flex: 1;
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: none;
+    background: #efefef;
+    font-size: 14px;
+}
+
+.top-search:focus{
+    outline: none;
+}
+
+.top-right{
+    display: flex;
+    align-items: center;
+}
+
+.profile-icon{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+.grid,
+.create-container{
+    margin-left: 110px;
+    margin-top: 90px;
+}
