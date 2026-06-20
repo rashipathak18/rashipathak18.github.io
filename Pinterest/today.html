@@ -3,41 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinterest Clone</title>
+    <title>Today | Pinterest Clone</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="sidebar">
-    <div class="topbar">
-   <input type="text" placeholder="Search" class="top-search">
- <div class="top-right">
+
+<!-- Topbar -->
+<div class="topbar">
+    <input type="text" placeholder="Search" class="top-search">
+    <div class="top-right">
         <div class="profile-icon">R</div>
     </div>
 </div>
-<div class="logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
-</div>
-<a href="index.html" class="nav-item active">🏠 Home</a>
-    <a href="today.html" class="nav-item">✨ Today</a>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
+    </div>
+    <a href="index.html" class="nav-item">🏠 Home</a>
+    <a href="today.html" class="nav-item active">✨ Today</a>
     <a href="create.html" class="nav-item">➕ Create</a>
     <a href="profile.html" class="nav-item">👤 Profile</a>
 </div>
-<main class="grid">
-    <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkYC7YAecBqDOuyuQyJtstbLnw4MtncaSGCQ&s"><button>Save</button></div>
-    <div class="card"><img src="https://i.pinimg.com/736x/9c/2a/03/9c2a031a294365fcb4448b076bb1725e.jpg"><button>Save</button></div>
-    <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv0g_THKp60HDAr4xXi9tBa7u2bpXH8FPvjQ&s"><button>Save</button></div>
-    <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXMlzS5tntCXUTYIDcVr20MxLMcrIVvNwtCw&s"><button>Save</button></div>
-     <div class="card"><img src="https://i.pinimg.com/736x/73/85/d3/7385d33f5bc38fcec7eba32f15c52ef3.jpg"><button>Save</button></div>
-      <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD1dAh8IFYPhhjNi7ngaG78clW1GP1W7ZUyg&s"><button>Save</button></div>
-       <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd7bBF0K2zDeDNomCNFXFN6dOf-W-z5g00bw&s"><button>Save</button></div>
-        <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigFLLSE9K-KgmQTU61iUl4FVTbRIbYQCGTA&s"><button>Save</button></div>
-         <div class="card"><img src="https://pixaii.com/files/preview/960x1713/11725127309uwqsfaobndck2wlkpvngf8sbhuvheofqx2fo9d08snwrlrd9hkcrzbal0fxvrylxekdgvdznhtrmcfpsyrvr3hq4yvjvzhrlas56.jpg"><button>Save</button></div>
-          <div class="card"><img src="https://easyblogemily.com/wp-content/uploads/2018/04/Make-your-Pinterest-look-amazing-featured-image.jpg"><button>Save</button></div>
-            <div class="card"><img src="https://i.pinimg.com/736x/c2/11/ea/c211ea7a9ec53bde878d3883ce0c02c3.jpg"><button>Save</button></div>
-              <div class="card"><img src="https://www.houseofceramics.in/cdn/shop/files/IMG-20250131-WA0067.jpg?v=1741583194"><button>Save</button></div>
-                <div class="card"><img src="https://w0.peakpx.com/wallpaper/579/373/HD-wallpaper-aesthetic-pinterest-window.jpg"><button>Save</button></div>
-                  <div class="card"><img src="https://i.pinimg.com/736x/38/fc/7d/38fc7d2c291def8e4e98f3665e9888e5.jpg"><button>Save</button></div>
-                    <div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTLIxKIOt6IwdJX39yyhGL42wxie5e_ndSjg&s"><button>Save</button></div>
+
+<!-- Today's heading -->
+<div style="margin-left:110px; margin-top:80px; padding:20px 20px 0;">
+    <h5 class="fw-bold">✨ Today's Picks</h5>
+    <p class="text-muted" style="font-size:13px;" id="todayDate"></p>
+</div>
+
+<!-- Bootstrap Progress Bar (showing "loading") -->
+<div style="margin-left:110px; padding:10px 20px;">
+    <div class="progress" style="height:4px; border-radius:10px;">
+        <div class="progress-bar bg-danger" style="width:100%;"></div>
+    </div>
+</div>
+
+<!-- Pin Grid -->
+<main class="grid" id="todayGrid">
+    <div class="card" data-tags="aesthetic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkYC7YAecBqDOuyuQyJtstbLnw4MtncaSGCQ&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="nature"><img src="https://i.pinimg.com/736x/9c/2a/03/9c2a031a294365fcb4448b076bb1725e.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv0g_THKp60HDAr4xXi9tBa7u2bpXH8FPvjQ&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="decor"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXMlzS5tntCXUTYIDcVr20MxLMcrIVvNwtCw&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="nature aesthetic"><img src="https://i.pinimg.com/736x/73/85/d3/7385d33f5bc38fcec7eba32f15c52ef3.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD1dAh8IFYPhhjNi7ngaG78clW1GP1W7ZUyg&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="decor"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd7bBF0K2zDeDNomCNFXFN6dOf-W-z5g00bw&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigFLLSE9K-KgmQTU61iUl4FVTbRIbYQCGTA&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="nature"><img src="https://pixaii.com/files/preview/960x1713/11725127309uwqsfaobndck2wlkpvngf8sbhuvheofqx2fo9d08snwrlrd9hkcrzbal0fxvrylxekdgvdznhtrmcfpsyrvr3hq4yvjvzhrlas56.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic decor"><img src="https://easyblogemily.com/wp-content/uploads/2018/04/Make-your-Pinterest-look-amazing-featured-image.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic"><img src="https://i.pinimg.com/736x/c2/11/ea/c211ea7a9ec53bde878d3883ce0c02c3.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="decor"><img src="https://www.houseofceramics.in/cdn/shop/files/IMG-20250131-WA0067.jpg?v=1741583194" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="nature aesthetic"><img src="https://w0.peakpx.com/wallpaper/579/373/HD-wallpaper-aesthetic-pinterest-window.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="aesthetic"><img src="https://i.pinimg.com/736x/38/fc/7d/38fc7d2c291def8e4e98f3665e9888e5.jpg" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
+    <div class="card" data-tags="decor"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTLIxKIOt6IwdJX39yyhGL42wxie5e_ndSjg&s" alt="pin"><button class="save-btn" onclick="savePin(this)">Save</button></div>
 </main>
+
+<!-- Toast -->
+<div class="toast-box">
+    <div id="saveToast" class="toast align-items-center text-white border-0" role="alert" style="background:#e60023;">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMsg">Pin saved!</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let savedPins = JSON.parse(localStorage.getItem('savedPins')) || [];
+
+    // Show today's date
+    window.onload = function () {
+        const today = new Date();
+        document.getElementById('todayDate').textContent = today.toDateString();
+
+        // Mark saved pins
+        document.querySelectorAll('.card').forEach(card => {
+            const imgSrc = card.querySelector('img').src;
+            const btn = card.querySelector('.save-btn');
+            if (savedPins.includes(imgSrc)) {
+                btn.textContent = 'Saved';
+                btn.classList.add('saved');
+            }
+        });
+    };
+
+    function savePin(btn) {
+        const imgSrc = btn.closest('.card').querySelector('img').src;
+
+        if (!savedPins.includes(imgSrc)) {
+            savedPins.push(imgSrc);
+            localStorage.setItem('savedPins', JSON.stringify(savedPins));
+            btn.textContent = 'Saved';
+            btn.classList.add('saved');
+            showToast('Pin saved! ❤️');
+        } else {
+            savedPins = savedPins.filter(p => p !== imgSrc);
+            localStorage.setItem('savedPins', JSON.stringify(savedPins));
+            btn.textContent = 'Save';
+            btn.classList.remove('saved');
+            showToast('Pin removed');
+        }
+    }
+
+    function showToast(msg) {
+        document.getElementById('toastMsg').textContent = msg;
+        const toast = new bootstrap.Toast(document.getElementById('saveToast'), { delay: 2000 });
+        toast.show();
+    }
+</script>
 </body>
 </html>

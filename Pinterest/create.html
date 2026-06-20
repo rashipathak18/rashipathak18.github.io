@@ -1,35 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create | Pinterest Clone</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="topbar">
-    <input type="text" placeholder="Search" class="top-search">
 
+<!-- Topbar -->
+<div class="topbar">
+    <input type="text" placeholder="Search" class="top-search">
     <div class="top-right">
         <div class="profile-icon">R</div>
     </div>
 </div>
 
+<!-- Sidebar -->
 <div class="sidebar">
-   <div class="logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
-</div>
- <a href="index.html" class="nav-item active">🏠 Home</a>
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
+    </div>
+    <a href="index.html" class="nav-item">🏠 Home</a>
     <a href="today.html" class="nav-item">✨ Today</a>
-    <a href="create.html" class="nav-item">➕ Create</a>
+    <a href="create.html" class="nav-item active">➕ Create</a>
     <a href="profile.html" class="nav-item">👤 Profile</a>
 </div>
-<div style="padding:40px; max-width:500px; margin:auto;">
-    <h2>Create Pin</h2><br>
-    <input type="text" placeholder="Title" style="width:100%; padding:10px;"><br><br>
-    <textarea placeholder="Description" style="width:100%; padding:10px;"></textarea><br><br>
-    <input type="file"><br><br>
-    <button style="padding:10px 20px; background:#e60023; color:white; border:none; border-radius:20px;">Publish</button>
+
+<!-- Create Pin Form (Bootstrap) -->
+<div class="create-container">
+    <h2>Create Pin</h2>
+
+    <!-- Image Preview -->
+    <div id="previewBox" style="display:none; margin-bottom:15px; text-align:center;">
+        <img id="previewImg" src="" alt="preview" style="max-width:100%; border-radius:12px; max-height:250px; object-fit:cover;">
+    </div>
+
+    <!-- Bootstrap Form -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Title</label>
+        <input type="text" id="pinTitle" class="form-control" placeholder="Add a title">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Description</label>
+        <textarea id="pinDesc" class="form-control" rows="3" placeholder="Tell everyone what your pin is about"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Upload Image</label>
+        <input class="form-control" type="file" id="pinImage" accept="image/*" onchange="previewImage(event)">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Or paste image URL</label>
+        <input type="text" id="pinUrl" class="form-control" placeholder="https://..." oninput="previewFromUrl()">
+    </div>
+
+    <!-- Error alert (Bootstrap) -->
+    <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+        Please add a title and an image!
+    </div>
+
+    <!-- Success alert -->
+    <div id="successAlert" class="alert alert-success d-none" role="alert">
+        Pin published successfully! 🎉
+    </div>
+
+    <button class="btn w-100 text-white fw-bold" style="background:#e60023; border-radius:25px;" onclick="publishPin()">
+        Publish
+    </button>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Preview image from file upload
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('previewBox').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Preview from URL input
+    function previewFromUrl() {
+        const url = document.getElementById('pinUrl').value;
+        if (url) {
+            document.getElementById('previewImg').src = url;
+            document.getElementById('previewBox').style.display = 'block';
+        }
+    }
+
+    // Publish pin - saves to localStorage
+    function publishPin() {
+        const title = document.getElementById('pinTitle').value.trim();
+        const desc = document.getElementById('pinDesc').value.trim();
+        const imgSrc = document.getElementById('previewImg').src;
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+
+        // Validation
+        if (!title || !imgSrc || imgSrc === window.location.href) {
+            errorAlert.classList.remove('d-none');
+            successAlert.classList.add('d-none');
+            return;
+        }
+
+        errorAlert.classList.add('d-none');
+
+        // Save to localStorage (like a mini database)
+        let myPins = JSON.parse(localStorage.getItem('myPins')) || [];
+        myPins.push({ title, desc, imgSrc });
+        localStorage.setItem('myPins', JSON.stringify(myPins));
+
+        successAlert.classList.remove('d-none');
+
+        // Reset form
+        setTimeout(() => {
+            document.getElementById('pinTitle').value = '';
+            document.getElementById('pinDesc').value = '';
+            document.getElementById('pinUrl').value = '';
+            document.getElementById('previewBox').style.display = 'none';
+            successAlert.classList.add('d-none');
+        }, 2000);
+    }
+</script>
 </body>
 </html>

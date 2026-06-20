@@ -4,39 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Pinterest Clone</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="topbar">
-   
-    <input type="text" placeholder="Search" class="top-search">
 
+<!-- Topbar -->
+<div class="topbar">
+    <input type="text" placeholder="Search" class="top-search">
     <div class="top-right">
         <div class="profile-icon">R</div>
     </div>
 </div>
 
-
+<!-- Sidebar -->
 <div class="sidebar">
-   <div class="logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
-</div>
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest">
+    </div>
     <a href="index.html" class="nav-item">🏠 Home</a>
     <a href="today.html" class="nav-item">✨ Today</a>
     <a href="create.html" class="nav-item">➕ Create</a>
     <a href="profile.html" class="nav-item active">👤 Profile</a>
 </div>
 
-<div class="create-container">
-    <h2>Rashi Pathak</h2>
-    <p style="text-align:center; margin-bottom:20px;">
-        @rashi · Pinterest Clone
-    </p>
+<!-- Profile Content -->
+<div class="profile-container">
 
-    <p style="text-align:center; color:#555;">
-        Saved pins will appear here.
-    </p>
+    <!-- Bootstrap Card for profile info -->
+    <div class="card border-0 shadow-sm mb-4" style="border-radius:20px; max-width:400px; margin:auto;">
+        <div class="card-body text-center py-4">
+            <div class="profile-icon mx-auto mb-3" style="width:60px; height:60px; font-size:22px;">R</div>
+            <h4 class="fw-bold mb-1">Rashi Pathak</h4>
+            <p class="text-muted mb-2">@rashi · Pinterest Clone</p>
+            <span class="badge rounded-pill bg-dark" id="savedCount">0 Saved Pins</span>
+        </div>
+    </div>
+
+    <!-- Tabs using Bootstrap -->
+    <ul class="nav nav-pills mb-3 justify-content-center" id="profileTabs">
+        <li class="nav-item">
+            <button class="nav-link active" onclick="showTab('saved', this)">❤️ Saved</button>
+        </li>
+        <li class="nav-item ms-2">
+            <button class="nav-link" onclick="showTab('created', this)">📌 Created</button>
+        </li>
+    </ul>
+
+    <!-- Saved Pins Tab -->
+    <div id="savedTab">
+        <div class="saved-grid" id="savedGrid">
+            <!-- Filled by JS -->
+        </div>
+        <p id="noSaved" class="text-center text-muted mt-4" style="display:none;">No saved pins yet. Go save some! 🏠</p>
+    </div>
+
+    <!-- Created Pins Tab -->
+    <div id="createdTab" style="display:none;">
+        <div class="saved-grid" id="createdGrid">
+            <!-- Filled by JS -->
+        </div>
+        <p id="noCreated" class="text-center text-muted mt-4" style="display:none;">No pins created yet. Go create one! ➕</p>
+    </div>
 </div>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Load saved pins from localStorage
+    window.onload = function () {
+        loadSaved();
+        loadCreated();
+    };
+
+    function loadSaved() {
+        const savedPins = JSON.parse(localStorage.getItem('savedPins')) || [];
+        const grid = document.getElementById('savedGrid');
+        const noSaved = document.getElementById('noSaved');
+
+        document.getElementById('savedCount').textContent = savedPins.length + ' Saved Pins';
+
+        if (savedPins.length === 0) {
+            noSaved.style.display = 'block';
+            return;
+        }
+
+        // Loop through saved pins and create cards (loops from syllabus!)
+        savedPins.forEach(function (src) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${src}" alt="saved pin" style="width:100%; border-radius:16px; display:block;">
+                <button class="save-btn saved" onclick="unsavePin(this, '${src}')">Saved</button>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function loadCreated() {
+        const myPins = JSON.parse(localStorage.getItem('myPins')) || [];
+        const grid = document.getElementById('createdGrid');
+        const noCreated = document.getElementById('noCreated');
+
+        if (myPins.length === 0) {
+            noCreated.style.display = 'block';
+            return;
+        }
+
+        myPins.forEach(function (pin) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${pin.imgSrc}" alt="${pin.title}" style="width:100%; border-radius:16px; display:block;">
+                <div style="padding:8px; font-size:13px; font-weight:600;">${pin.title}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Remove a saved pin
+    function unsavePin(btn, src) {
+        let savedPins = JSON.parse(localStorage.getItem('savedPins')) || [];
+        savedPins = savedPins.filter(p => p !== src);
+        localStorage.setItem('savedPins', JSON.stringify(savedPins));
+
+        // Remove card from DOM
+        btn.closest('.card').remove();
+        document.getElementById('savedCount').textContent = savedPins.length + ' Saved Pins';
+
+        if (savedPins.length === 0) {
+            document.getElementById('noSaved').style.display = 'block';
+        }
+    }
+
+    // Tab switcher
+    function showTab(tab, btn) {
+        document.getElementById('savedTab').style.display = tab === 'saved' ? 'block' : 'none';
+        document.getElementById('createdTab').style.display = tab === 'created' ? 'block' : 'none';
+
+        // Update active tab button
+        document.querySelectorAll('#profileTabs .nav-link').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
 </body>
 </html>
